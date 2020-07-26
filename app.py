@@ -34,9 +34,14 @@ def dump_state():
 def load_state():
     global words
     global solved
-    with open('state.txt', 'r') as f:
-        words = set(json.loads(f.readline()))
-        solved = set(json.loads(f.readline()))
+    try:
+        with open('state.txt', 'r') as f:
+            words = set(json.loads(f.readline()))
+            solved = set(json.loads(f.readline()))
+    except Exception as e:
+        words = set()
+        solved = set()
+        print('Can not load state: {}'.format(e))
     print(words)
     print(solved)
 
@@ -97,3 +102,9 @@ def mark_as_solved(word):
     words.remove(word)
     dump_state()
     return redirect(url_for('get_random'), code=302)
+
+
+if __name__ == "__main__":
+    app.run()
+
+
